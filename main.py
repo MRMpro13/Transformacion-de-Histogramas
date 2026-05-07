@@ -1,3 +1,4 @@
+# main.py
 import cv2
 import os
 import tkinter as tk
@@ -10,7 +11,7 @@ from graficador import mostrar_resultados
 class AplicacionProcesamiento:
     def __init__(self, root):
         self.root = root
-        self.root.title("Transformacion de Histogramas")
+        self.root.title("Procesamiento de Imágenes MA475")
         self.root.geometry("450x250")
         self.root.resizable(False, False)
 
@@ -21,6 +22,7 @@ class AplicacionProcesamiento:
         marco = ttk.Frame(self.root, padding="20")
         marco.pack(fill=tk.BOTH, expand=True)
 
+        # Sección 1: Búsqueda de archivo
         ttk.Label(marco, text="1. Selecciona una imagen:", font=("Arial", 10, "bold")).pack(anchor=tk.W, pady=(0, 5))
 
         marco_archivo = ttk.Frame(marco)
@@ -36,7 +38,7 @@ class AplicacionProcesamiento:
 
         self.opcion_metodo = tk.StringVar(value="Expansion")
 
-        ttk.Radiobutton(marco, text="Expansión de Histograma", variable=self.opcion_metodo,
+        ttk.Radiobutton(marco, text="Expansión de Histograma (Estiramiento)", variable=self.opcion_metodo,
                         value="Expansion").pack(anchor=tk.W)
         ttk.Radiobutton(marco, text="Ecualización de Histograma", variable=self.opcion_metodo,
                         value="Ecualizacion").pack(anchor=tk.W, pady=(0, 15))
@@ -59,9 +61,28 @@ class AplicacionProcesamiento:
             messagebox.showerror("Error", "Ruta inválida.")
             return
 
-        img_original = cv2.imread(self.ruta_imagen, cv2.IMREAD_GRAYSCALE)
-        if img_original is None:
+        img_raw = cv2.imread(self.ruta_imagen, cv2.IMREAD_UNCHANGED)
+
+        if img_raw is None:
             messagebox.showerror("Error", "El archivo no se pudo leer correctamente.")
+            return
+
+        dimensiones = len(img_raw.shape)
+
+        if dimensiones == 2:
+            img_original = img_raw
+
+        elif dimensiones == 3:
+            num_canales = img_raw.shape[2]
+
+            if num_canales == 3:
+                img_original = cv2.cvtColor(img_raw, cv2.COLOR_BGR2GRAY)
+            elif num_canales == 4:
+                img_original = cv2.cvtColor(img_raw, cv2.COLOR_BGRA2GRAY)
+            else:
+                img_original = img_raw  # Caso de seguridad (raro)
+        else:
+            messagebox.showerror("Error", "Formato de imagen no soportado.")
             return
 
         metodo = self.opcion_metodo.get()

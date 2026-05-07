@@ -6,7 +6,6 @@ def aplicar_expansion(imagen: np.ndarray) -> np.ndarray:
     r1 = np.percentile(imagen, 1)
     r2 = np.percentile(imagen, 99)
 
-    # Evitar división por cero
     if r1 == r2:
         return imagen.copy()
 
