@@ -1,15 +1,13 @@
-# visualizador.py
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-def mostrar_resultados(img_orig: np.ndarray, img_proc: np.ndarray, titulo_metodo: str):
-
+def generar_figura_resultados(img_orig: np.ndarray, img_proc: np.ndarray, titulo_metodo: str):
     hist_orig = cv2.calcHist([img_orig], [0], None, [256], [0, 256])
     hist_proc = cv2.calcHist([img_proc], [0], None, [256], [0, 256])
 
-    fig, axs = plt.subplots(2, 2, figsize=(12, 8), dpi=100)
+    fig, axs = plt.subplots(2, 2, figsize=(10, 6), dpi=100)
     fig.suptitle(f'{titulo_metodo} Teórica de Histograma', fontsize=16, fontweight='bold')
 
     axs[0, 0].imshow(img_orig, cmap='gray', vmin=0, vmax=255)
@@ -35,4 +33,5 @@ def mostrar_resultados(img_orig: np.ndarray, img_proc: np.ndarray, titulo_metodo
 
     plt.tight_layout()
     fig.subplots_adjust(top=0.90)
-    plt.show()
+
+    return fig
