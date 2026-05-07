@@ -21,7 +21,6 @@ class AplicacionProcesamiento:
         marco = ttk.Frame(self.root, padding="20")
         marco.pack(fill=tk.BOTH, expand=True)
 
-        # Sección 1: Búsqueda de archivo
         ttk.Label(marco, text="1. Selecciona una imagen:", font=("Arial", 10, "bold")).pack(anchor=tk.W, pady=(0, 5))
 
         marco_archivo = ttk.Frame(marco)
