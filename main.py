@@ -55,7 +55,6 @@ class AplicacionProcesamiento:
 
         estilo.configure("Title.TLabel", font=("Segoe UI", 16, "bold"), foreground=COLOR_TEXTO, background=COLOR_FONDO_OSCURO)
         estilo.configure("Info.TLabel", font=("Segoe UI", 9), foreground=COLOR_TEXTO_SEC, background=COLOR_FONDO)
-        estilo.configure("Status.TLabel", font=("Segoe UI", 8), foreground=COLOR_TEXTO_SEC, background=COLOR_FONDO_OSCURO)
 
         estilo.configure("TEntry", font=("Segoe UI", 10), fieldbackground="#ffffff")
         estilo.configure("TCombobox", font=("Segoe UI", 10), fieldbackground="#ffffff")
@@ -210,15 +209,6 @@ class AplicacionProcesamiento:
             font=("Segoe UI", 13), foreground="#cccccc", anchor=tk.CENTER
         )
         self.lbl_calc_placeholder.pack(expand=True)
-
-        # Barra de estado
-        marco_estado = ttk.Frame(self.root, style="TFrame", relief=tk.SUNKEN, borderwidth=1)
-        marco_estado.pack(side=tk.BOTTOM, fill=tk.X)
-        self.lbl_estado = ttk.Label(
-            marco_estado, text="Listo",
-            style="Status.TLabel", padding=(12, 4)
-        )
-        self.lbl_estado.pack(side=tk.LEFT)
 
     def _alternar_rango(self, *_args: object) -> None:
         if self.opcion_metodo.get().startswith("Expansión"):
@@ -405,7 +395,6 @@ class AplicacionProcesamiento:
         self.lbl_resultado_titulo.config(text=f"{titulo} — {os.path.basename(self.ruta_imagen)}")
         self.btn_guardar.config(state=tk.NORMAL)
         self.notebook.select(0)
-        self.lbl_estado.config(text=f"{titulo} completada")
 
     def guardar_imagen(self) -> None:
         if self.img_procesada is None:
@@ -420,7 +409,6 @@ class AplicacionProcesamiento:
         )
         if ruta:
             cv2.imwrite(ruta, self.img_procesada)
-            self.lbl_estado.config(text=f"Imagen guardada en: {os.path.basename(ruta)}")
             messagebox.showinfo("Guardado", f"Imagen guardada en:\n{ruta}")
 
     @staticmethod
